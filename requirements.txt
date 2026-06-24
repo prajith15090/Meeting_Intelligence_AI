@@ -1,0 +1,11 @@
+streamlit
+psycopg2-binary
+sqlalchemy
+google-generativeai
+sendgrid
+fpdf
+openai-whisper
+python-dotenv
+pandas
+moviepy
+python-docx
