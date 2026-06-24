@@ -6,6 +6,31 @@ import time
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
+def format_field_to_string(field_value) -> str:
+    """
+    Helper to convert dictionaries, lists, or other objects returned by Gemini 
+    into a clean markdown string representation.
+    """
+    if field_value is None:
+        return ""
+    if isinstance(field_value, dict):
+        lines = []
+        for key, val in field_value.items():
+            if isinstance(val, (dict, list)):
+                lines.append(f"**{key}**:\n{format_field_to_string(val)}")
+            else:
+                lines.append(f"**{key}**: {val}")
+        return "\n\n".join(lines)
+    elif isinstance(field_value, list):
+        lines = []
+        for idx, item in enumerate(field_value):
+            if isinstance(item, dict):
+                lines.append(f"- **Item {idx + 1}**:\n{format_field_to_string(item)}")
+            else:
+                lines.append(f"- {item}")
+        return "\n".join(lines)
+    return str(field_value)
+
 def analyze_meeting(transcript: str, customer_name: str, meeting_date: str) -> dict:
     """
     Sends the transcript to Gemini API and generates all required intelligence in a single JSON call.
@@ -61,6 +86,32 @@ def analyze_meeting(transcript: str, customer_name: str, meeting_date: str) -> d
             
             try:
                 result = json.loads(response.text)
+                
+                # Ensure fields that must be strings are formatted correctly
+                string_fields = ["summary", "mom", "customer_insights", "sentiment", "deal_stage", "probability", "email_draft"]
+                for field in string_fields:
+                    if field in result:
+                        result[field] = format_field_to_string(result[field])
+                
+                # Normalize action_items to a list of dicts
+                if "action_items" in result:
+                    if isinstance(result["action_items"], dict):
+                        items = []
+                        for k, v in result["action_items"].items():
+                            if isinstance(v, dict):
+                                items.append({
+                                    "task": v.get("task", k),
+                                    "owner": v.get("owner", "N/A"),
+                                    "due_date": v.get("due_date", "TBD")
+                                })
+                            else:
+                                items.append({"task": f"{k}: {v}", "owner": "N/A", "due_date": "TBD"})
+                        result["action_items"] = items
+                    elif isinstance(result["action_items"], str):
+                        result["action_items"] = [{"task": result["action_items"], "owner": "N/A", "due_date": "TBD"}]
+                    elif not isinstance(result["action_items"], list):
+                        result["action_items"] = []
+                        
                 return result
             except json.JSONDecodeError as e:
                 print(f"JSON Parse Error: {e}")
