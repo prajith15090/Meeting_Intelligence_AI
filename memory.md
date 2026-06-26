@@ -1,6 +1,6 @@
-# Sales Meeting Intelligence App - Simple Explanation
+# Meeting Intelligence AI App - Simple Explanation
 
-Welcome to the simple guide for the **Sales Meeting Intelligence** project! This document explains what this project is and how it works in plain, non-technical language.
+Welcome to the simple guide for the **Meeting Intelligence AI** project! This document explains what this project is and how it works in plain, non-technical language.
 
 ---
 

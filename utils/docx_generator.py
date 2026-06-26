@@ -4,7 +4,7 @@ import os
 def create_docx_report(data: dict, output_path: str):
     doc = Document()
     
-    doc.add_heading('Sales Meeting Intelligence Report', 0)
+    doc.add_heading('Meeting Intelligence AI Report', 0)
     
     doc.add_paragraph(f"Customer: {data.get('customer_name', '')}")
     doc.add_paragraph(f"Date: {data.get('meeting_date', '')}")

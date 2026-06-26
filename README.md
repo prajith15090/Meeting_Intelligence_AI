@@ -1,6 +1,6 @@
-# Sales Meeting Intelligence 🎙️
+# Meeting Intelligence AI 🎙️
 
-Welcome to **Sales Meeting Intelligence**! This is a smart AI assistant app designed to sit in on your sales meetings, take notes, analyze customer sentiment, draft follow-up emails, and generate professional reports.
+Welcome to **Meeting Intelligence AI**! This is a smart AI assistant app designed to sit in on your meetings, take notes, analyze customer sentiment, draft follow-up emails, and generate professional reports.
 
 You upload a meeting audio or video recording, and the app takes care of the rest.
 
